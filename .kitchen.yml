@@ -1,0 +1,26 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: art-witczak-dev-oregon
+  security_group_ids: ops-scripting-interview
+  region: us-west-2
+  availability_zone: b
+  require_chef_omnibus: true
+  instance_type: t2.micro
+  tags:
+    Name: Ops-Interview
+    CreatedBy: <%= ENV['USER'] %>
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04-ec2
+    driver:
+      name: ec2
+      image_id: ami-9abea4fb
+suites:
+  - name: default
+    run_list:
+      - recipe[opsinterview::default]
+    attributes:

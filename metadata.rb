@@ -1,0 +1,8 @@
+name             'opsinterview'
+maintainer       'Some User'
+maintainer_email 'some.user@audaxhealth.com'
+license          'All rights reserved'
+description      'Installs/Configures opsinterview'
+long_description 'Installs/Configures opsinterview'
+version          '0.1.0'
+depends 'apt'
