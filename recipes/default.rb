@@ -2,7 +2,7 @@
 # Cookbook Name:: opsinterview
 # Recipe:: default
 #
-# Copyright (C) 2016 Some User
+# Copyright (C) 2016 Rally Health, Inc.
 #
 # All rights reserved - Do Not Redistribute
 #

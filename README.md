@@ -1,29 +1,23 @@
 # opsinterview-cookbook
 
-TODO: Enter the cookbook description here.
+Create an EC2 Instance for the DevOps Linux and Scripting interview exercise.
+
+```
+export AWS_ACCESS_KEY=your-aws-access-key-id
+export AWS_SECRET_KEY=your-aws-secret-key
+```
 
 ## Supported Platforms
 
-TODO: List your supported platforms.
-
+Ubuntu-14.04
 ## Attributes
 
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['opsinterview']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+Currently no attributes.
 
 ## Usage
+```
+kitchen converge
+```
 
 ### opsinterview::default
 
@@ -39,4 +33,4 @@ Include `opsinterview` in your node's `run_list`:
 
 ## License and Authors
 
-Author:: Some User (<some.user@audaxhealth.com>)
+Author:: Art Witczak (art.witczak@rallyhealth.com>)
