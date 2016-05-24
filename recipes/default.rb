@@ -23,6 +23,28 @@ cookbook_file '/etc/nginx/sites-available/default' do
   mode '0644'
 end
 
+cookbook_file '/usr/share/nginx/html/index.html' do
+  source 'index.html'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+cookbook_file '/usr/share/nginx/html/rally.png' do
+  source 'rally.png'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+cookbook_file '/usr/share/nginx/html/rally.css' do
+  source 'rally.css'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+
 cookbook_file '/etc/ssh/sshd_config' do
   source 'sshd_config'
   owner 'root'

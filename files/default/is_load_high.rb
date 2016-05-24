@@ -5,4 +5,3 @@ if loadavg[1].to_f < 1.00
 else
   puts "normal"
 end
-EOF

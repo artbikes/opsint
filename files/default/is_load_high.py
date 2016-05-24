@@ -4,4 +4,3 @@ if float(loadavg[1]) < 1.00:
   print "high"
 else:
   print "normal"
-EOF
