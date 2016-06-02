@@ -1,7 +1,7 @@
 ---
 driver:
   name: ec2
-  aws_ssh_key_id: art-witczak-dev-oregon
+  aws_ssh_key_id: <%= ENV['INTERVIEW_SSH_KEY_ID'] %>
   security_group_ids: ops-scripting-interview
   region: us-west-2
   availability_zone: b
@@ -10,17 +10,20 @@ driver:
   tags:
     Name: Ops-Interview
     CreatedBy: <%= ENV['USER'] %>
+    owner: ops
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-14.04-ec2-2
     driver:
       name: ec2
       image_id: ami-9abea4fb
+    transport:
+      username: ubuntu
+
 suites:
   - name: default
     run_list:
       - recipe[opsinterview::default]
-    attributes:
