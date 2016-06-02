@@ -15,7 +15,7 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-14.04-ec2
+  - name: ubuntu-14.04-ec2-2
     driver:
       name: ec2
       image_id: ami-9abea4fb

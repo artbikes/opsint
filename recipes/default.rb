@@ -133,7 +133,9 @@ script 'create access logs' do
   code <<-eof
     for ((n=0;n<1000;n++));
     do num=$RANDOM;
-      echo "4.15.73.226 - - [01/Jan/2016:18:54:01 +0000] \"GET / HTTP/1.1\" $(( ( RANDOM % 5 )  + 1 ))00 $RANDOM \"-\" \"MyUserAgent/537.36\"";
+      echo  -n '4.15.73.226 - - [01/Jan/2016:18:54:01 +0000] "GET / HTTP/1.1"'
+      echo -n " $(( ( num % 5 )  + 1 ))00 $num"
+      echo ' "-" "MyUserAgent/537.36"'
     done > /home/ubuntu/access.log
   eof
 end
