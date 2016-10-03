@@ -8,7 +8,7 @@
 #
 include_recipe 'apt'
 
-package ['nginx', 'ruby', 'htop'] do
+package %w(nginx ruby htop) do
   action :upgrade
 end
 
@@ -44,7 +44,6 @@ cookbook_file '/usr/share/nginx/html/rally.css' do
   mode '0644'
 end
 
-
 cookbook_file '/etc/ssh/sshd_config' do
   source 'sshd_config'
   owner 'root'
@@ -58,7 +57,7 @@ end
 
 user 'ubuntu' do
   home '/home/ubuntu'
-  supports :manage_home => true
+  manage_home true
   action :create
   password '$1$meyYeU7E$/m4EGobQQ59RM5BEYEkN30'
 end
@@ -88,16 +87,16 @@ end
 
 script 'create swapfile' do
   interpreter 'bash'
-  not_if { File.exists?('/swapfile') }
+  not_if { ::File.exist?('/swapfile') }
   code <<-eof
-    dd if=/dev/zero of=/swapfile bs=1M count=4096 &&
+    fallocate -l 4G /swapfile &&
     chmod 600 /swapfile &&
     mkswap /swapfile
   eof
 end
 
 mount '/dev/null' do  # swap file entry for fstab
-  action :enable  # cannot mount; only add to fstab
+  action :enable      # cannot mount; only add to fstab
   device '/swapfile'
   fstype 'swap'
 end

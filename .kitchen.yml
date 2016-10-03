@@ -14,11 +14,18 @@ driver:
 provisioner:
   name: chef_solo
 
+verifier:
+    name: inspec
+
 platforms:
   - name: ubuntu-14.04-ec2-2
     driver:
       name: ec2
       image_id: ami-9abea4fb
+  - name: ubuntu-14.04-vagrant
+    driver:
+      name: vagrant
+      box: ubuntu/trusty64
 suites:
   - name: default
     run_list:
