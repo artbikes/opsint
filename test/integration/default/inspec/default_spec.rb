@@ -19,7 +19,7 @@ describe file('/swapfile') do
 end
 
 describe file('/etc/nginx/sites-available/default') do
-  its('content') { should match(%r{<<<<<<< HEAD:mergetest}) }
+  its(:content) { should match(/<<<<<<< HEAD:mergetest/) }
 end
 
 describe file('/usr/share/nginx/html/index.html') do
@@ -27,11 +27,11 @@ describe file('/usr/share/nginx/html/index.html') do
 end
 
 describe file('/etc/ssh/sshd_config') do
-  its('content') { should match(%r{PasswordAuthentication yes}) }
+  its(:content) { should match(/PasswordAuthentication yes/) }
 end
 
 describe file('/home/ubuntu/access.log') do
-  its('content') { should match(%r{MyUserAgent}) }
+  its(:content) { should match(/MyUserAgent/) }
 end
 
 describe file('/home/ubuntu/is_load_high.py') do
