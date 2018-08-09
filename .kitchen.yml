@@ -2,11 +2,11 @@
 driver:
   name: ec2
   aws_ssh_key_id: <%= ENV['INTERVIEW_SSH_KEY_ID'] %>
-  security_group_ids: ops-scripting-interview
+  security_group_ids: sg-06a53f720aa1f7225
   region: us-west-2
-  availability_zone: b
+  availability_zone: c
   require_chef_omnibus: true
-  instance_type: t2.micro
+  instance_type: m1.small
   tags:
     Name: Ops-Interview
     CreatedBy: <%= ENV['USER'] %>
@@ -22,7 +22,7 @@ platforms:
   - name: ubuntu-14.04-ec2-2
     driver:
       name: ec2
-      image_id: ami-9abea4fb
+      image_id: ami-40184038
   - name: ubuntu-14.04-vagrant
     driver:
       name: vagrant

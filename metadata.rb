@@ -1,6 +1,6 @@
 name             'opsinterview'
-maintainer       'Some User'
-maintainer_email 'some.user@audaxhealth.com'
+maintainer       'Art Witczak'
+maintainer_email 'art.bikes@gmail.com'
 license          'All rights reserved'
 description      'Installs/Configures opsinterview'
 long_description 'Installs/Configures opsinterview'
