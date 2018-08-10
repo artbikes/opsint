@@ -2,10 +2,7 @@
 # Cookbook Name:: opsinterview
 # Recipe:: default
 #
-# Copyright (C) 2016 Rally Health, Inc.
-#
-# All rights reserved - Do Not Redistribute
-#
+
 include_recipe 'apt'
 
 package %w(nginx ruby htop) do
@@ -16,11 +13,24 @@ service 'nginx' do
   action :stop
 end
 
-cookbook_file '/etc/nginx/sites-available/default' do
-  source 'default'
+file '/etc/nginx/sites-available/default' do
+  action :delete
+  only_if {File.exist? '/etc/nginx/sites-available/default'}
+end
+
+link '/etc/nginx/sites-enabled/default' do
+  action :delete
+end
+
+cookbook_file '/etc/nginx/sites-available/web-app.conf' do
+  source 'web-app.conf'
   owner 'root'
   group 'root'
   mode '0644'
+end
+
+link '/etc/nginx/sites-enabled/web-app.conf' do
+  to '/etc/nginx/sites-available/web-app.conf'
 end
 
 cookbook_file '/usr/share/nginx/html/index.html' do
@@ -30,15 +40,15 @@ cookbook_file '/usr/share/nginx/html/index.html' do
   mode '0644'
 end
 
-cookbook_file '/usr/share/nginx/html/rally.png' do
-  source 'rally.png'
+cookbook_file '/usr/share/nginx/html/success.png' do
+  source 'success.png'
   owner 'root'
   group 'root'
   mode '0644'
 end
 
-cookbook_file '/usr/share/nginx/html/rally.css' do
-  source 'rally.css'
+cookbook_file '/usr/share/nginx/html/success.css' do
+  source 'success.css'
   owner 'root'
   group 'root'
   mode '0644'
@@ -106,18 +116,28 @@ script 'activate swap' do
   code 'swapon -a'
 end
 
-directory '/var/log/rally-health' do
+directory '/var/log/web-app' do
   owner 'root'
   group 'root'
   mode 0755
   action :create
 end
 
+today = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i).strftime("%Y-%m-%d")}.log"
+yesterday = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i - 86400).strftime("%Y-%m-%d")}.log"
 script 'create logfiles' do
   interpreter 'bash'
+  not_if { File.exist?(yesterday) }
   code <<-eof
-    dd if=/dev/zero of=/var/log/rally-health/2016-01-01.log bs=1M count=1000 &&
-    dd if=/dev/zero of=/var/log/rally-health/2016-01-02.log bs=1M count=1000
+    dd if=/dev/zero of=#{today} bs=1M count=1000 &&
+    dd if=/dev/zero of=#{yesterday} bs=1M count=1000
+  eof
+end
+
+script 'immutable logfile' do
+  interpreter 'bash'
+  code <<-eof
+    chattr +i /var/log/web-app/web-app-$(date --date="1 days ago" +%F).log
   eof
 end
 
@@ -136,5 +156,14 @@ script 'create access logs' do
       echo -n " $(( ( num % 5 )  + 1 ))00 $num"
       echo ' "-" "MyUserAgent/537.36"'
     done > /home/ubuntu/access.log
+  eof
+end
+
+script 'Inject answers into syslog' do
+  interpreter 'bash'
+  code <<-eof
+    cd /home/ubuntu
+    sudo logger BINGOMIPS: ` awk '{sum += $10} END {print sum}' access.log`
+    sudo logger BONGOMIPS: ` awk '/ 200 /{sum += $10} END {print sum}' access.log`
   eof
 end
