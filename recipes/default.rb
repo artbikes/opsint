@@ -29,8 +29,8 @@ cookbook_file '/etc/nginx/sites-available/web-app.conf' do
   mode '0644'
 end
 
-link '/etc/nginx/sites-enabled/web-app.conf' do
-  to '/etc/nginx/sites-available/web-app.conf'
+link '/etc/nginx/sites-enabled/api.conf' do
+  to '/etc/nginx/sites-available/api.conf'
 end
 
 cookbook_file '/usr/share/nginx/html/index.html' do
@@ -116,15 +116,15 @@ script 'activate swap' do
   code 'swapon -a'
 end
 
-directory '/var/log/web-app' do
+directory '/var/log/api' do
   owner 'root'
   group 'root'
   mode 0755
   action :create
 end
 
-today = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i).strftime("%Y-%m-%d")}.log"
-yesterday = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i - 86400).strftime("%Y-%m-%d")}.log"
+today = "/var/log/api/api-#{Time.at(Time.now.to_i).strftime("%Y-%m-%d")}.log"
+yesterday = "/var/log/api/api-#{Time.at(Time.now.to_i - 86400).strftime("%Y-%m-%d")}.log"
 script 'create logfiles' do
   interpreter 'bash'
   not_if { File.exist?(yesterday) }
@@ -134,10 +134,42 @@ script 'create logfiles' do
   eof
 end
 
+cookbook_file "/usr/local/bin/api" do
+  source "api"
+  owner "root"
+  group "root"
+  mode  0700
+end
+
+cookbook_file "/etc/init/api.conf" do
+  source "api.conf"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+service "api" do
+  provider Chef::Provider::Service::Upstart
+  enabled true
+  running true
+  supports :restart => true, :reload => true, :status => true
+  action [:enable, :start]
+end
+
+script 'api requests' do
+  interpreter 'bash'
+  code <<-eof
+    for i in `seq 1 1000`
+    do 
+        wget -q http://localhost:8000/
+    done
+  eof
+end
+
 script 'immutable logfile' do
   interpreter 'bash'
   code <<-eof
-    chattr +i /var/log/web-app/web-app-$(date --date="1 days ago" +%F).log
+    chattr +i /var/log/api/api-$(date --date="1 days ago" +%F).log
   eof
 end
 

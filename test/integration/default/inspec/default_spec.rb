@@ -26,6 +26,10 @@ describe file('/usr/share/nginx/html/index.html') do
   it { should exist }
 end
 
+describe service('api') do
+  it { should be_running }
+end
+
 describe file('/etc/ssh/sshd_config') do
   its(:content) { should match(/PasswordAuthentication yes/) }
 end
@@ -46,12 +50,12 @@ describe file('/home/ubuntu/is_load_high.py') do
   it { should exist }
 end
 
-today = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i).strftime("%Y-%m-%d")}.log"
+today = "/var/log/api/api-#{Time.at(Time.now.to_i).strftime("%Y-%m-%d")}.log"
 describe file(today) do
   it { should exist}
 end
 
-yesterday = "/var/log/web-app/web-app-#{Time.at(Time.now.to_i - 86400).strftime("%Y-%m-%d")}.log"
+yesterday = "/var/log/api/api-#{Time.at(Time.now.to_i - 86400).strftime("%Y-%m-%d")}.log"
 describe file(yesterday) do
   it { should exist}
 end
