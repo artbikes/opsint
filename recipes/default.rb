@@ -29,8 +29,8 @@ cookbook_file '/etc/nginx/sites-available/web-app.conf' do
   mode '0644'
 end
 
-link '/etc/nginx/sites-enabled/api.conf' do
-  to '/etc/nginx/sites-available/api.conf'
+link '/etc/nginx/sites-enabled/web-app.conf' do
+  to '/etc/nginx/sites-available/web-app.conf'
 end
 
 cookbook_file '/usr/share/nginx/html/index.html' do
