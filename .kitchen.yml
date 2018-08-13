@@ -33,6 +33,6 @@ platforms:
 
 
 suites:
-  - name: default
+  - name: opsint
     run_list:
       - recipe[opsinterview::default]
