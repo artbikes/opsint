@@ -161,7 +161,7 @@ script 'api requests' do
   code <<-eof
     for i in `seq 1 1000`
     do 
-        wget -q http://localhost:8000/
+        wget -qO- http://localhost:8000/
     done
   eof
 end
